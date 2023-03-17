@@ -5,11 +5,15 @@ import acronymArr from './acrons.json' assert {type: 'json'}
 //open a database connection
 const dbConnection = async () => {
     try {
-        await mongoose.connect('mongodb+srv://ritika-k:ritika21@fulhaus-cluster.hqtvchd.mongodb.net/acronyms');
-        console.log("connected to the db")
+        await mongoose.connect('mongodb+srv://ritika-k:ritika21@fulhaus-cluster.hqtvchd.mongodb.net/acronym');
+        const db = mongoose.connection;
+
+        db.on('error', (error) => {console.log(error)});
+
+        db.once('connected', () => {console.log('connected and ready')})
     } catch (error) {
         console.error(`The connection to DB could not be established: ${error}`);
-    }
+    } 
 }
 
 //match search and return array
@@ -40,6 +44,14 @@ const paginateAndProcessAcronyms = async (page = DEFAULT_PAGE, limit = DEFAULT_L
         data: paginatedData.length ? paginatedData : ['There is nothing to display on this page!'],
         header,
     };
+}
+
+//insert entry from post request into pre-existing file
+const addAcronymEntry = async (acronym, definition) => {
+    await dbConnection();
+
+    
+
 }
 
 export { dbConnection, paginateAndProcessAcronyms };
