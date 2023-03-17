@@ -1,7 +1,6 @@
-import express, { response } from 'express';
-import acronymArr from '../util/acrons.json' assert {type: 'json'}
+import express from 'express';
 import { Acronym } from '../model/model.js';
-import { dbConnection, paginateAndProcessAcronyms } from '../util/reusable.js';
+import { paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry } from '../util/reusable.js';
 
 const app = express();
 
@@ -17,12 +16,22 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/', async (req, res) => {
-    const acron = new Acronym({ acronym: "W8", definition: "Wait" })
     try {
-        await acron.save();
-        res.send(acron);
-    } catch (e) {
-        console.log("Could not save the document: ", e);
+        const addedAcronym = await addAcronymEntry(req.body.acronym, req.body.definition);
+        res.send(addedAcronym);
+    } catch (error) {
+        console.log("Could not POST request, please try again: ", error);
+    }
+})
+
+app.patch('/:acronymID', async(req, res) => {
+    try{
+        if(req.params && req.params.acronymID){
+            const patchedEntry = await updateAcronymEntry(req.params.acronymID, req.body.acronym, req.body.definition);
+            res.send(patchedEntry);
+        }
+    }catch(error){
+        console.log("Could not PATCH request, please try again: ", error);
     }
 })
 

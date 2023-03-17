@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { DEFAULT_PAGE, DEFAULT_LIMIT, DEFAULT_SEARCH } from './default.js';
 import acronymArr from './acrons.json' assert {type: 'json'}
+import { Acronym } from '../model/model.js';
+
 
 //open a database connection
 const dbConnection = async () => {
@@ -48,10 +50,19 @@ const paginateAndProcessAcronyms = async (page = DEFAULT_PAGE, limit = DEFAULT_L
 
 //insert entry from post request into pre-existing file
 const addAcronymEntry = async (acronym, definition) => {
-    await dbConnection();
-
-    
-
+    acronym = acronym.toUpperCase();
+    //cleaner way to define properties with the same names as the variables
+    const acronymEntryToAdd = { acronym, definition };
+    const acron = new Acronym(acronymEntryToAdd);
+    const acronymAdded = await acron.save();
+    return acronymAdded;
 }
 
-export { dbConnection, paginateAndProcessAcronyms };
+//update entry from patch request from pre-existing entry
+const updateAcronymEntry = async (acronymId, acronym, definition) => {
+    acronym = acronym.toUpperCase();
+    const acronymEntryToUpdate = { acronym, definition };
+    const acronymUpdated = await Acronym.findByIdAndUpdate(acronymId, acronymEntryToUpdate, {new: true})
+    return acronymUpdated ? acronymUpdated : "No data found";
+}
+export { dbConnection, paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry };
