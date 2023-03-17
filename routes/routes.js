@@ -1,6 +1,5 @@
 import express from 'express';
-import { Acronym } from '../model/model.js';
-import { paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry } from '../util/reusable.js';
+import { paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry, deleteAcronymEntry } from '../util/reusable.js';
 
 const app = express();
 
@@ -35,5 +34,15 @@ app.patch('/:acronymID', async(req, res) => {
     }
 })
 
+app.delete('/:acronymID', async(req, res) => {
+    try{
+        if(req.params && req.params.acronymID){
+            const deletedEntry = await deleteAcronymEntry(req.params.acronymID); 
+            res.send(deletedEntry);
+        }
+    }catch(error){
+        console.log("Could not complete DELETE request, please try again: ", error);
+    }
+})
 
 export { app };

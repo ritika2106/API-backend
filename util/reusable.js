@@ -63,6 +63,12 @@ const updateAcronymEntry = async (acronymId, acronym, definition) => {
     acronym = acronym.toUpperCase();
     const acronymEntryToUpdate = { acronym, definition };
     const acronymUpdated = await Acronym.findByIdAndUpdate(acronymId, acronymEntryToUpdate, {new: true})
-    return acronymUpdated ? acronymUpdated : "No data found";
+    return acronymUpdated ? acronymUpdated : 'No data found';
 }
-export { dbConnection, paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry };
+
+const deleteAcronymEntry = async (acronymId) => {
+    const acronymDeleted = await Acronym.findByIdAndDelete(acronymId);
+    return acronymDeleted ? acronymDeleted : `Entry with ${acronymId} could not be found`;
+}
+
+export { dbConnection, paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry, deleteAcronymEntry };
