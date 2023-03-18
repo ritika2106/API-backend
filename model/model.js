@@ -1,3 +1,4 @@
+/*This file shows the shcema used to add documents to the database */
 import mongoose from 'mongoose';
 
 const acronSchema = new mongoose.Schema({

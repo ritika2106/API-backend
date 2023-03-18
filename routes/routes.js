@@ -3,9 +3,11 @@ import { paginateAndProcessAcronyms, addAcronymEntry, updateAcronymEntry, delete
 
 const app = express();
 
+//get request at /acronym
 app.get('/', async (req, res) => {
     try {
         const processedArray = await paginateAndProcessAcronyms(req.query.page, req.query.limit, req.query.search)
+        //set header before passing processed data
         res.set({ 'More-Data': processedArray.header })
         res.send(processedArray.data);
     }
@@ -14,6 +16,7 @@ app.get('/', async (req, res) => {
     }
 })
 
+//post request at /acronym
 app.post('/', async (req, res) => {
     try {
         const addedAcronym = await addAcronymEntry(req.body.acronym, req.body.definition);
@@ -23,6 +26,7 @@ app.post('/', async (req, res) => {
     }
 })
 
+//patch request for specific acronym Id
 app.patch('/:acronymID', async(req, res) => {
     try{
         if(req.params && req.params.acronymID){
@@ -34,6 +38,7 @@ app.patch('/:acronymID', async(req, res) => {
     }
 })
 
+//delete request for specific acronym id
 app.delete('/:acronymID', async(req, res) => {
     try{
         if(req.params && req.params.acronymID){
