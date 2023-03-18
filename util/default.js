@@ -6,6 +6,6 @@
 const DEFAULT_LIMIT = 10,
     DEFAULT_PAGE = 1,
     DEFAULT_SEARCH = '';
-    DB_URI = 'mongodb+srv://ritika-k:ritika21@fulhaus-cluster.hqtvchd.mongodb.net/acronym';
+    DB_URI = 'mongodb+srv://ritika-k:<password>@fulhaus-cluster.hqtvchd.mongodb.net/acronym';
 
 export { DEFAULT_PAGE, DEFAULT_LIMIT, DEFAULT_SEARCH, DB_URI }; 
